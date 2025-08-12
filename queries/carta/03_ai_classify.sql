@@ -1,47 +1,82 @@
-/*
-===============================================================================
-SNOWFLAKE CORTEX AI CLASSIFICATION PIPELINE
-===============================================================================
-Purpose: Use Snowflake's Cortex AI functions to classify and analyze document
-         chunks for specific content patterns and data structures
-         
-TABLE OF CONTENTS:
-------------------
-QUERY 1: Data Table Detection
-         - Identifies chunks containing tabular data
-         - Uses AI to detect table structures in text
-         
-Prerequisites:
-- CARTA_DOCS_CHUNKS_FLAT table created from 02_parse_document.sql
-- Cortex AI functions enabled in Snowflake account
-===============================================================================
-*/
+-- =====================================================================================
+-- SNOWFLAKE CORTEX AI CLASSIFICATION PIPELINE
+-- =====================================================================================
+-- Purpose: Classify document chunks using AI to identify content patterns
+-- Database: EQUITY_INTEL_POC
+-- Schema: PROCESSED
+-- Last Updated: 2025
+-- 
+-- OVERVIEW:
+-- ---------
+-- This script demonstrates Snowflake's AI classification capabilities using
+-- Cortex functions to automatically identify and categorize document content.
+-- It focuses on detecting structured data within unstructured text, particularly
+-- tables and financial data formats commonly found in valuation documents.
+--
+-- TABLE OF CONTENTS:
+-- ------------------
+-- Use CTRL+F to search for these section markers:
+--
+-- [SECTION 1: SETUP]         - Database and warehouse configuration
+-- [SECTION 2: TABLE_DETECT]  - Identify chunks containing data tables
+--
+-- TABLES CREATED:
+-- ---------------
+-- CHUNKS_WITH_TABLE_CLASSIFICATION - Document chunks with table detection flags
+--
+-- KEY FEATURES:
+-- -------------
+-- - AI_CLASSIFY: Multi-label classification using natural language descriptions
+-- - AI_FILTER: Pre-filtering to optimize processing
+-- - Pattern detection for markdown tables, financial statements
+-- - Boolean classification for downstream processing
+--
+-- CLASSIFICATION LOGIC:
+-- --------------------
+-- The AI looks for:
+-- - Pipe characters (|) indicating markdown tables
+-- - Horizontal dividers (---) for table headers
+-- - Columnar alignment of data
+-- - Financial indicators ($ symbols, percentages)
+-- - Structured numeric data in rows and columns
+--
+-- PREREQUISITES:
+-- --------------
+-- - Run 02_parse_document.sql first
+-- - CARTA_DOCS_CHUNKS_FLAT table must exist
+-- - Cortex AI functions enabled
+-- - Sufficient warehouse compute for AI operations
+--
+-- USE CASES:
+-- -----------
+-- - Extract financial tables from valuation reports
+-- - Identify cap tables and ownership structures
+-- - Locate comparative analysis sections
+-- - Find pricing and valuation matrices
+-- - Detect structured financial statements
+--
+-- PERFORMANCE NOTES:
+-- ------------------
+-- - AI_FILTER reduces processing by pre-screening chunks
+-- - Classification is compute-intensive; use appropriate warehouse size
+-- - Results are cached in the output table for efficiency
+--
+-- =====================================================================================
 
--- Initial setup: Configure database context
+-- =====================================================================================
+-- [SECTION 1: SETUP]
+-- =====================================================================================
+-- Configure database context for AI classification operations
+
 USE DATABASE EQUITY_INTEL_POC;
 USE SCHEMA PROCESSED;
 USE WAREHOUSE EQUITY_INTEL_WH;
 
-/*
-===============================================================================
-QUERY 1: Data Table Detection in Document Chunks
-Purpose: Analyze each document chunk to determine if it contains a data table
-         using Cortex AI classification capabilities.
-         
-Details:
-- Input: CARTA_DOCS_CHUNKS_FLAT from previous processing
-- AI Analysis: Detects presence of tabular data structures
-- Boolean Classification: TRUE if table detected, FALSE otherwise
-- Pattern Recognition: Identifies various table formats including:
-  - Markdown tables with pipe delimiters
-  - Financial statements with columns
-  - Structured data with headers and rows
-  - Statistical tables with numeric data
-
-Output Table: CHUNKS_WITH_TABLE_CLASSIFICATION
-Columns: All original columns plus has_data_table boolean
-===============================================================================
-*/
+-- =====================================================================================
+-- [SECTION 2: TABLE_DETECT]
+-- =====================================================================================
+-- Use AI to identify document chunks containing data tables
+-- This is critical for extracting structured financial data from PDFs
 CREATE OR REPLACE TABLE CHUNKS_WITH_TABLE_CLASSIFICATION AS
 SELECT 
     relative_path,

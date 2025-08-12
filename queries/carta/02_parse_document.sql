@@ -1,63 +1,74 @@
-/*
-===============================================================================
-SNOWFLAKE CORTEX DOCUMENT PROCESSING PIPELINE
-===============================================================================
-Purpose: Demonstrate end-to-end document processing workflow using Snowflake's
-         Cortex Suite for parsing, chunking, and structuring PDF documents
-         
-TABLE OF CONTENTS:
-------------------
-QUERY 1: Single Document Parse Test
-         - Tests PARSE_DOCUMENT with LAYOUT mode and page splitting
-         - Validates Cortex functionality on a single PDF
-         
-QUERY 2: Batch Document Processing  
-         - Creates enriched table from all documents in stage
-         - Stores both page-split and full document versions
-         
-QUERY 3: Semantic Chunking with Flattening
-         - Splits documents by markdown headers for RAG applications
-         - Creates overlapping chunks for better context preservation
-         - Flattens nested JSON into relational format
-         
-QUERY 4: Page-Level Flattening
-         - Flattens page-split JSON into relational format
-         - One record per page for granular analysis
+-- =====================================================================================
+-- SNOWFLAKE CORTEX DOCUMENT PROCESSING PIPELINE
+-- =====================================================================================
+-- Purpose: Parse and process PDF documents using Cortex AI capabilities
+-- Database: EQUITY_INTEL_POC
+-- Schema: PROCESSED
+-- Last Updated: 2025
+-- 
+-- OVERVIEW:
+-- ---------
+-- This script demonstrates Snowflake's advanced document processing capabilities
+-- using the PARSE_DOCUMENT function from Cortex Suite. It transforms unstructured
+-- PDF documents into queryable, structured data suitable for AI analysis.
+--
+-- TABLE OF CONTENTS:
+-- ------------------
+-- Use CTRL+F to search for these section markers:
+--
+-- [SECTION 1: SETUP]         - Database and warehouse configuration
+-- [SECTION 2: PARSE_TEST]    - Single document parsing validation
+-- [SECTION 3: BATCH_PROCESS] - Process all PDFs in stage
+-- [SECTION 4: CHUNK_DOCS]    - Semantic chunking for RAG
+-- [SECTION 5: FLATTEN_PAGES] - Page-level data extraction
+--
+-- TABLES CREATED:
+-- ---------------
+-- 1. CARTA_DOCS_ENRICHED     - Master table with parsed document data
+-- 2. CARTA_DOCS_CHUNKED      - Documents split by semantic headers
+-- 3. CARTA_DOCS_CHUNKS_FLAT  - Flattened chunks for vector search
+-- 4. CARTA_DOCS_PAGES_FLAT   - Individual pages as queryable records
+--
+-- KEY FEATURES:
+-- -------------
+-- - LAYOUT mode parsing preserves tables and formatting
+-- - Page splitting handles large documents efficiently
+-- - Semantic chunking based on markdown headers
+-- - 2000 character chunks with 200 character overlap
+-- - Automatic metadata extraction and URL generation
+--
+-- PREREQUISITES:
+-- --------------
+-- - Run 01_environment_setup.sql first
+-- - Documents uploaded to CARTA_DOCS_STAGE
+-- - Cortex Suite enabled in account
+-- - EQUITY_INTEL_WH warehouse running
+--
+-- USE CASES:
+-- -----------
+-- - 409A valuation report analysis
+-- - Document search and retrieval
+-- - RAG (Retrieval Augmented Generation)
+-- - Compliance document processing
+-- - Financial data extraction
+--
+-- =====================================================================================
 
-Prerequisites:
-- Documents uploaded to stages via 01_environment_setup.sql
-- PROCESSED schema created with enriched tables
-- Cortex Suite enabled in Snowflake account
+-- =====================================================================================
+-- [SECTION 1: SETUP]
+-- =====================================================================================
+-- Configure database context for document processing operations
 
-Key Tables Created:
-- CARTA_DOCS_ENRICHED: Raw parsed documents with metadata
-- CARTA_DOCS_CHUNKED: Documents split by headers
-- CARTA_DOCS_CHUNKS_FLAT: Flattened chunks for querying
-- CARTA_DOCS_PAGES_FLAT: Individual pages as records
-===============================================================================
-*/
-
--- Initial setup: Configure database context for document processing
 USE DATABASE EQUITY_INTEL_POC;
 USE SCHEMA PROCESSED;
 USE WAREHOUSE EQUITY_INTEL_WH;
 
-/*
-===============================================================================
-QUERY 1: Single Document Parse Test
-Purpose: Validate PARSE_DOCUMENT functionality on a single PDF before batch
-         processing. Tests both LAYOUT mode for table extraction and page
-         splitting for handling large documents.
-         
-Details:
-- LAYOUT mode: Preserves document structure including tables and formatting
-- page_split: TRUE splits large documents into manageable page-sized chunks
-- TO_VARIANT: Converts output to queryable JSON format
-         
-Expected Output: JSON object with pages array containing content and metadata
-Use Case: Initial testing and debugging of document parsing parameters
-===============================================================================
-*/
+-- =====================================================================================
+-- [SECTION 2: PARSE_TEST]
+-- =====================================================================================
+-- Test PARSE_DOCUMENT on a single PDF to validate Cortex functionality
+-- This query helps verify parsing parameters before batch processing
+-- Expected output: JSON with pages array containing extracted content
 SELECT 
     TO_VARIANT(
         SNOWFLAKE.CORTEX.PARSE_DOCUMENT(
@@ -67,24 +78,14 @@ SELECT
         )
     ) AS parsed_document;
 
-/*
-===============================================================================
-QUERY 2: Batch Document Processing - Create Enriched Table
-Purpose: Process all PDF documents in the stage and create a comprehensive
-         enriched table with multiple parsing strategies for flexibility.
-         
-Details:
-- Processes all files in CARTA_DOCS_STAGE automatically
-- Creates two parsing versions:
-  1. raw_text_dict: Page-split version for page-level analysis
-  2. raw_text_layout: Full document for complete text extraction
-- GET_PRESIGNED_URL: Generates secure URLs for document access
-- DIRECTORY function: Iterates through all stage files
-
-Output Table: CARTA_DOCS_ENRICHED
-Columns: relative_path, scoped_file_url, raw_text_dict, raw_text_layout, raw_text
-===============================================================================
-*/
+-- =====================================================================================
+-- [SECTION 3: BATCH_PROCESS]
+-- =====================================================================================
+-- Process all PDFs in the stage and create master enriched table
+-- Stores multiple parsing formats for maximum flexibility:
+-- - raw_text_dict: Page-split JSON for granular analysis
+-- - raw_text_layout: Complete document with preserved formatting
+-- - raw_text: Plain text extraction for full-text search
 CREATE OR REPLACE TABLE CARTA_DOCS_ENRICHED AS 
 SELECT
     relative_path,
@@ -97,31 +98,15 @@ FROM DIRECTORY(@DOCUMENTS.CARTA_DOCS_STAGE);
 -- View the results
 SELECT * FROM CARTA_DOCS_ENRICHED;
 
-/*
-===============================================================================
-QUERY 3: Semantic Chunking with Hierarchical Headers
-Purpose: Split documents into semantic chunks based on markdown headers for
-         RAG (Retrieval Augmented Generation) and intelligent search indexing.
-         
-Details:
-- SPLIT_TEXT_MARKDOWN_HEADER: Cortex function for intelligent splitting
-- Header Hierarchy:
-  - '#': Main sections (top-level topics)
-  - '##': Subsections (detailed topics)
-  - '###': Detail sections (specific points)
-- Chunk Size: 2000 characters (optimal for embedding models)
-- Overlap: 200 characters (preserves context between chunks)
-
-Processing Steps:
-1. Create chunked table with nested JSON
-2. Flatten JSON array into individual chunk records
-3. Extract header hierarchy for semantic navigation
-
-Output Tables: 
-- CARTA_DOCS_CHUNKED: Nested chunks array
-- CARTA_DOCS_CHUNKS_FLAT: One record per chunk with metadata
-===============================================================================
-*/
+-- =====================================================================================
+-- [SECTION 4: CHUNK_DOCS]
+-- =====================================================================================
+-- Split documents into semantic chunks for RAG and vector search
+-- Uses markdown headers to maintain document structure:
+-- - # = Main sections
+-- - ## = Subsections  
+-- - ### = Detail sections
+-- Chunk parameters: 2000 chars with 200 char overlap for context
 CREATE OR REPLACE TABLE CARTA_DOCS_CHUNKED AS
 SELECT 
     relative_path,
@@ -154,28 +139,12 @@ FROM
 -- View flattened results
 SELECT * FROM CARTA_DOCS_CHUNKS_FLAT;
 
-/*
-===============================================================================
-QUERY 4: Page-Level Document Flattening
-Purpose: Transform page-split JSON structure into a relational table with
-         one record per page for granular document analysis and processing.
-         
-Details:
-- LATERAL FLATTEN: Expands nested pages array into rows
-- Page Identification: Creates unique page_id for tracking
-- Metadata Extraction: Captures total page count from document metadata
-- Content Length: Tracks page content size for analysis
-
-Use Cases:
-- Page-specific search and retrieval
-- Document navigation and pagination
-- Content density analysis
-- Page-level annotation and tagging
-
-Output Table: CARTA_DOCS_PAGES_FLAT
-Columns: relative_path, page_id, page_number, page_content, page_title, content_length, total_pages
-===============================================================================
-*/
+-- =====================================================================================
+-- [SECTION 5: FLATTEN_PAGES]
+-- =====================================================================================
+-- Transform page-split JSON into relational format for easy querying
+-- Creates one record per page with extracted metadata
+-- Automatically generates page titles from content or headers
 CREATE OR REPLACE TABLE CARTA_DOCS_PAGES_FLAT AS
 SELECT 
     relative_path,

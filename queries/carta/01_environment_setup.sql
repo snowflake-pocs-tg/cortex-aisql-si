@@ -1,26 +1,59 @@
-/*
-===============================================================================
-EQUITY INTELLIGENCE POC - ENVIRONMENT SETUP
-===============================================================================
-Purpose: Set up Snowflake environment for unstructured document processing
-         POC demonstration
-         
-This script creates:
-- Database for equity management POC
-- Schemas for raw and processed documents
-- Warehouse for compute
-- Stages for document storage
-- Document upload commands
+-- =====================================================================================
+-- EQUITY INTELLIGENCE POC - ENVIRONMENT SETUP
+-- =====================================================================================
+-- Purpose: Set up Snowflake environment for unstructured document processing POC
+-- Database: EQUITY_INTEL_POC
+-- Last Updated: 2025
+-- 
+-- OVERVIEW:
+-- ---------
+-- This script establishes the complete Snowflake environment needed for the Equity
+-- Intelligence POC. It creates all necessary database objects for storing, processing,
+-- and analyzing 409A valuation documents using Snowflake's Cortex AI capabilities.
+--
+-- TABLE OF CONTENTS:
+-- ------------------
+-- Use CTRL+F to search for these section markers:
+--
+-- [SECTION 1: DATABASE]    - Create POC database
+-- [SECTION 2: SCHEMAS]     - Create storage and processing schemas
+-- [SECTION 3: WAREHOUSE]   - Set up compute resources
+-- [SECTION 4: STAGES]      - Configure document storage stages
+-- [SECTION 5: UPLOAD]      - Upload sample PDF documents
+--
+-- WHAT THIS CREATES:
+-- ------------------
+-- Database: EQUITY_INTEL_POC
+-- Schemas:  DOCUMENTS (raw storage), PROCESSED (enriched data), TOOLS (utilities)
+-- Warehouse: EQUITY_INTEL_WH (XSMALL, auto-suspend)
+-- Stages: ETON_DOCS_STAGE, EQVISTA_DOCS_STAGE, MELD_DOCS_STAGE, CARTA_DOCS_STAGE
+--
+-- PREREQUISITES:
+-- --------------
+-- - ACCOUNTADMIN or SYSADMIN role
+-- - Snowflake account with Cortex Suite enabled
+-- - Sample PDF files in _pdfs/ directory
+--
+-- SAMPLE DOCUMENTS:
+-- -----------------
+-- - abc_llc.pdf       - Eton Venture Services format
+-- - eqvista.pdf       - Eqvista standard format
+-- - meldvaluation.pdf - Meld Valuation historical format
+-- - carta.pdf         - Industry standard baseline
+--
+-- IMPORTANT NOTES:
+-- ----------------
+-- - AUTO_COMPRESS must be FALSE for PARSE_DOCUMENT to work with PDFs
+-- - Stages use Snowflake Server-Side Encryption (SSE)
+-- - Warehouse auto-suspends after 60 seconds of inactivity
+-- - All stages have DIRECTORY enabled for metadata tracking
+--
+-- =====================================================================================
 
-Prerequisites:
-- ACCOUNTADMIN or SYSADMIN role
-- Access to Snowflake account with Cortex Suite enabled
-===============================================================================
-*/
-
--- ============================================================================
--- SECTION 1: DATABASE SETUP
--- ============================================================================
+-- =====================================================================================
+-- [SECTION 1: DATABASE]
+-- =====================================================================================
+-- Create the main POC database for all equity intelligence operations
 
 USE ROLE SYSADMIN;
 
@@ -30,9 +63,10 @@ CREATE DATABASE IF NOT EXISTS EQUITY_INTEL_POC
 
 USE DATABASE EQUITY_INTEL_POC;
 
--- ============================================================================
--- SECTION 2: SCHEMA SETUP
--- ============================================================================
+-- =====================================================================================
+-- [SECTION 2: SCHEMAS]
+-- =====================================================================================
+-- Create schemas for organizing different data layers
 
 -- Raw document storage layer
 CREATE SCHEMA IF NOT EXISTS DOCUMENTS
@@ -46,9 +80,10 @@ CREATE SCHEMA IF NOT EXISTS PROCESSED
 CREATE SCHEMA IF NOT EXISTS TOOLS
     COMMENT = 'Custom Tools';
 
--- ============================================================================
--- SECTION 3: WAREHOUSE SETUP
--- ============================================================================
+-- =====================================================================================
+-- [SECTION 3: WAREHOUSE]
+-- =====================================================================================
+-- Configure compute resources optimized for document processing
 
 -- Create optimized warehouse for POC workloads
 CREATE WAREHOUSE IF NOT EXISTS EQUITY_INTEL_WH
@@ -62,9 +97,10 @@ CREATE WAREHOUSE IF NOT EXISTS EQUITY_INTEL_WH
 
 USE WAREHOUSE EQUITY_INTEL_WH;
 
--- ============================================================================
--- SECTION 4: STAGE SETUP FOR DOCUMENT STORAGE
--- ============================================================================
+-- =====================================================================================
+-- [SECTION 4: STAGES]
+-- =====================================================================================
+-- Create secure stages for storing different valuation document formats
 
 USE SCHEMA DOCUMENTS;
 
@@ -95,9 +131,10 @@ CREATE OR REPLACE STAGE CARTA_DOCS_STAGE
     ENCRYPTION = (TYPE = 'SNOWFLAKE_SSE')
     DIRECTORY = (ENABLE = TRUE);
 
--- ============================================================================
--- SECTION 5: PUT SAMPLE DATA INTO STAGES
--- ============================================================================
+-- =====================================================================================
+-- [SECTION 5: UPLOAD]
+-- =====================================================================================
+-- Upload sample valuation PDFs to their respective stages
 
 -- Upload valuation report samples from local PDFs (relative to repo root)
 -- IMPORTANT: AUTO_COMPRESS must be FALSE for PARSE_DOCUMENT to work with PDFs
