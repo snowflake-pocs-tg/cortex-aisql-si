@@ -1,0 +1,21 @@
+ID_RSSD_PARENT,NAME_PARENT,ACTIVE_PARENT,CATEGORY_PARENT,ID_RSSD_OFFSPRING,NAME_OFFSPRING,ACTIVE_OFFSPRING,CATEGORY_OFFSPRING,RELATIONSHIP_TERMINATED,PARENT_CONTROLS_OFFSPRING,PERCENT_CONTROL_OF_OFFSPRING,RELATIONSHIP_LEVEL
+473501,Berkshire Bank,True,Bank,5138092,"OLD SPOT PROPERTIES, LLC",True,Other Financial Institution,False,True,,Direct relationship
+1842065,CIBC Bank USA,True,Bank,6072269,HUDSON HOUSING TAX CREDIT FUND XCVII LP,True,Other Financial Institution,False,True,,Direct relationship
+395238,Synovus Bank,True,Bank,6072241,"AUTUMN LAKE TN 2025, LLC",True,Other Financial Institution,False,True,,Direct relationship
+13103,Bristol County Savings Bank,True,Bank,5167944,"RFG-BRISTOL WEALTH ADVISORS, LLC",True,Other Financial Institution,False,True,,Direct relationship
+476810,"Citibank, National Association",True,Bank,2860945,PROVENCRED 1,False,Other Financial Institution,True,True,80.0,Direct relationship
+140362,Sunwest Bank,True,Bank,6030812,"501 S COLLEGE, LLC",True,Other Financial Institution,False,True,,Direct relationship
+463735,Hancock Whitney Bank,True,Bank,2942216,"BERWICK, L.L.C.",True,Other Financial Institution,False,True,,Direct relationship
+477303,Woodsville Guaranty Savings Bank,False,Bank,3466625,GROTON COMMUNITY HOUSING LIMITED PARTNERSHIP,False,Other Financial Institution,True,True,,Direct relationship
+6031006,"AVIDIA BANCORP, INC.",True,Other Financial Institution,619701,Avidia Bank,True,Bank,False,True,100.0,Direct relationship
+2465528,ASSABET VALLEY BANCORP,False,Bank Holding Company,619701,Avidia Bank,True,Bank,True,True,100.0,Direct relationship
+477303,Woodsville Guaranty Savings Bank,False,Bank,3587717,CCML NEW HAMPSHIRE INVESTMENT FUND II LLC,False,Other Financial Institution,True,True,,Direct relationship
+187947,Bank Iowa,True,Bank,6071374,"IPE CLOSING & ESCROW, LLC",True,Other Financial Institution,False,True,,Direct relationship
+63069,City National Bank,True,Bank,6061900,"RBC COMMUNITY INVESTMENTS NATIONAL FUND-38, L.P.",True,Other Financial Institution,False,True,,Direct relationship
+3294556,"COMMUNITY FIRST BANCORPORATION, INC.",False,Bank Holding Company,2642598,Community First Bank,False,Bank,True,True,100.0,Direct relationship
+1061996,"FARMERS STATE BANKSHARES, INC.",False,Bank Holding Company,64150,Wyoming Bank & Trust,True,Branch,True,True,97.0,Direct relationship
+70414,The Northumberland National Bank,True,Branch,4528717,"NNB FINANCIAL SERVICES, LLC",False,Other Financial Institution,True,True,,Direct relationship
+70414,The Northumberland National Bank,True,Branch,2840451,"ENTERPRISE TECHNOLOGY ALLIANCE, INC.",False,Other Financial Institution,True,True,,Direct relationship
+1016941,Intercity State Bank,True,Branch,2263368,"R.B. FINANCIAL INVESTMENTS, INC.",False,Other Financial Institution,True,True,80.0,Direct relationship
+1356768,Enterprise Bank and Trust Company,False,Bank,3382248,ENTERPRISE SECURITY CORPORATION,False,Other Financial Institution,True,True,80.0,Direct relationship
+613008,Rockland Trust Company,True,Bank,3382248,ENTERPRISE SECURITY CORPORATION,False,Other Financial Institution,True,True,100.0,Direct relationship

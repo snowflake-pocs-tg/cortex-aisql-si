@@ -1,0 +1,21 @@
+ID_RSSD,VARIABLE,VARIABLE_NAME,VALUE,UNIT,DATE
+19972,P3LAG,Farm loans 30 - 89 days past due,,USD,2016-09-30
+19972,P3LAG,Farm loans 30 - 89 days past due,,USD,2024-03-31
+930965,SZDROTH,"Charge-offs, All Other Loans and Leases Securitized by Bank",,USD,2000-12-31
+296438,IINVFEEQ,Investment Banking Advisory Brokerage and Underwriting Fees,,USD,2000-09-30
+628356,TOOTHF,"Other Mutual Funds, Managed All Other Accounts",,USD,1994-09-30
+144052,DRFORGVQ,Loans to Foreign Governments and Official Institutions,,USD,1991-09-30
+789051,DRFORGVQ,Loans to Foreign Governments and Official Institutions,,USD,2021-12-31
+144052,SZISLCI,"Maximum Credit Exposure, C&I Loans Securitized by Bank",,USD,2020-09-30
+519146,LNCI3N,"Number with Original Amounts of More Than $250,000 Through $1,000,000",,USD,1987-03-31
+764151,TCSBNUM,"Stock/Bond Blend, Collective Investment & Common Trust Funds Number",,Count,2014-09-30
+764151,PPPLNPLG,Outstanding Balance of PPP Loans Pledged To The PPPLF,,USD,2001-12-31
+764151,DRREFORQ,Real Estate Loans in Foreign Offices,,USD,2003-09-30
+130943,EINTGWQ,Goodwill Impairment Losses,,USD,1985-06-30
+860231,TPIRE,"Real Estate, Managed Personal Trust & Investment Management Agency Accounts",,USD,1988-03-31
+761543,DRDEPNUS,To Foreign Banks,,USD,1997-03-31
+761543,P3LCI,Commercial and industrial loans 30 - 89 days past due,,USD,2021-06-30
+382742,NALREMUL,Real estate loans secured by multifamily (5 or more) residential properties in nonaccrual,,USD,2007-06-30
+944047,NALREMUL,Real estate loans secured by multifamily (5 or more) residential properties in nonaccrual,,USD,2002-03-31
+126450,NTREMULT,Secured By Multifamily Residential Properties,,USD,1985-09-30
+504647,OTBFH1L,FHLB Advances Maturity Or Repricing: One Year Or Less,,USD,2005-12-31

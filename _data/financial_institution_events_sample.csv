@@ -1,0 +1,21 @@
+ID_RSSD_SUCCESSOR,NAME_SUCCESSOR,ACTIVE_SUCCESSOR,CATEGORY_SUCCESSOR,ID_RSSD_PREDECESSOR,NAME_PREDECESSOR,ACTIVE_PREDECESSOR,CATEGORY_PREDECESSOR,TRANSACTION_DATE,TRANSFORMATION_TYPE,MERGER_ACCOUNTING_METHOD_UTILIZED
+202907,"Community Bank, National Association",True,Bank,861304,Elmira Savings Bank,False,Branch,2022-05-14,Charter Discontinued,Purchase/Acquisition
+23643,Commercial Bank & Trust Company,True,Bank,843542,First State Bank of Warren,True,Branch,2024-06-24,Charter Discontinued,Purchase/Acquisition
+416245,Busey Bank,True,Bank,1008432,Merchants and Manufacturers Bank,True,Branch,2024-06-22,Charter Discontinued,Pooling of interests or entities under common control.
+1008432,Merchants and Manufacturers Bank,True,Branch,253833,First Bank of Channahon,True,Branch,1988-09-24,Charter Discontinued,
+751656,Frandsen Bank & Trust,True,Bank,903455,Bank of Zumbrota,False,Branch,2022-10-15,Charter Discontinued,Pooling of interests or entities under common control.
+829733,Florida National Bank,False,Branch,723635,Citrus Park Bank,False,Branch,1986-06-04,Charter Discontinued,
+634955,"Patrons Bank, National Association",True,Bank,288750,"First National Bank, Henryetta",True,Branch,2006-09-09,Charter Discontinued,Pooling of interests or entities under common control.
+634955,"Patrons Bank, National Association",True,Bank,53453,First National Bank in Wewoka,True,Branch,2014-08-09,Charter Discontinued,Pooling of interests or entities under common control.
+435666,Security Bank of Texas,True,Bank,34863,"The First Bank, Roxton, Texas",False,Branch,2009-07-07,Charter Discontinued,Purchase/Acquisition
+1004470,Bankhometown,True,Bank,949305,Millbury Savings Bank,True,Branch,2019-10-19,Charter Discontinued,Purchase/Acquisition
+93356,American Bank Mankato,False,Bank,1212592,First Prairie Bank,False,Branch,1992-05-01,Charter Discontinued,
+665557,Mercantile Bank of Northern Missouri,False,Branch,281452,Shelbina Mercantile Bank,False,Branch,1988-09-16,Charter Discontinued,
+1212592,First Prairie Bank,False,Branch,365352,The First National Bank of Blooming Prairie,False,Bank,1988-07-21,Failure,
+708959,Southwest Bank,False,Branch,9759,Southwest Bank of Hickory County,False,Branch,1992-12-23,Charter Discontinued,
+84644,"Firstar Bank Wausau, National Association",False,Branch,360544,WISCONSIN RAPIDS OFFICE,False,Branch,1996-02-26,Charter Discontinued,Pooling of interests or entities under common control.
+767723,"NationsBank, National Association",False,Branch,609926,NORTHAMPTON COUNTY TRUST BANK,False,Other Financial Institution,1968-11-15,Charter Discontinued,
+767723,"NationsBank, National Association",False,Branch,37024,FARMERS & MERCHANTS BANK OF LAWRENCEVILLE,False,Other Financial Institution,1968-07-01,Charter Discontinued,
+767723,"NationsBank, National Association",False,Branch,30922,First National Bank of South Boston,False,Branch,1982-06-14,Charter Discontinued,
+767723,"NationsBank, National Association",False,Branch,153728,The Merchants and Farmers Bank,False,Other Financial Institution,1970-06-01,Charter Discontinued,
+767723,"NationsBank, National Association",False,Branch,699824,FARMERS AND MERCHANTS BANK OF STAUNTON,False,Other Financial Institution,1963-12-16,Charter Discontinued,
