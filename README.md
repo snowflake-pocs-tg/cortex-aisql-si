@@ -38,14 +38,6 @@ Navigate to the `queries/carta/` directory and execute the SQL files in numbered
 2. Import the agent configuration from `snowflake_intelligence/docs/`
 3. Use the provided agent descriptions and tool configurations
 
-### Step 4: Start Asking Questions
-Once setup is complete, you can ask natural language questions like:
-- "Show me the top performing banks in Texas"
-- "Which banks have the highest capital ratios?"
-- "What's the branch density by state?"
-- "Show recent merger and acquisition activity"
-- "Which institutions have high risk indicators?"
-
 ## Project Structure
 - **_data/** - Sample financial data for testing
 - **_pdfs/** - Example valuation documents
